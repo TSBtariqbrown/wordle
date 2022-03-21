@@ -2,6 +2,9 @@ from tkinter import *
 import random
 
 class WordleGame:
+    """
+    Initialize a new game board and word.
+    """
     def __init__(self, window, word=""):
         self.window = window
         self.createDict()
@@ -15,8 +18,10 @@ class WordleGame:
         self.createEntryBox()
         self.createLetterGrid()
         self.createUpdateBar()
-        # ADD ERROR HANDLING
 
+    """
+    Create the PlayBoard frame and pack it into the window.
+    """
     def createPlayBoard(self):
         self.playBoard = Frame(self.window)
         self.playBoard.pack()
@@ -28,9 +33,10 @@ class WordleGame:
                 label.grid(row=row, padx=3, pady=5, column=col)
                 labelRow.append(label)
             self.playBoard_matrix.append(labelRow)
-        # ADD ERROR HANDLING
     
-
+    """
+    Create the EntryBox frame and pack it into the window.
+    """
     def createEntryBox(self):
         self.entryBox = Frame(self.window)
         self.entryBox.pack()
@@ -40,9 +46,10 @@ class WordleGame:
 
         self.submitButton = Button(self.entryBox, text="ENTER", width=6, command=self.click)
         self.submitButton.pack(side=RIGHT)
-        # ADD ERROR HANDLING
 
-
+    """
+    Create the LetterGrid frame and pack it into the window.
+    """
     def createLetterGrid(self):
         self.letterGrid = Frame(self.window)
         self.letterGrid.pack()
@@ -63,18 +70,20 @@ class WordleGame:
                 labelRow.append(label)
                 letter += 1
         self.letterGrid_matrix.append(labelRow)
-        # ADD ERROR HANDLING
     
-
+    """
+    Create the UpdateBar frame and pack it into the window.
+    """
     def createUpdateBar(self):
         self.updateBar = Frame(self.window)
         self.updateBar.pack(side=RIGHT)
 
         self.statusBar = Label(self.updateBar, text="Ready to play!", font="Times 12")
         self.statusBar.pack()
-        #ADD ERROR HANDLING
 
-
+    """
+    Respond to the user's gues submit and update all of the relevant UI options.
+    """
     def click(self):
         right_count = 0
         guess = self.wordEntry.get()
@@ -110,7 +119,10 @@ class WordleGame:
             self.checkGameEnd(right_count)
         self.wordEntry.delete(0, END)
 
-
+    """
+    Set the colors of the desired grid. Option 1 changes the PlayBoard grid and option 2 changes the LetterGrid grid. 
+    No need for a row and column if option 2, only letter.
+    """
     def setGrid(self, type, fg, bg, row=0, column=0, letter=""):
         if type == 1:
             self.playBoard_matrix[row][column].config(bg=bg, fg=fg, text=letter)
@@ -134,17 +146,25 @@ class WordleGame:
             self.statusBar.config(text = f'The word was "{self.word}". Click "RESET" to start a new game.')
             self.submitButton.config(text="RESET", command=self.resetGame)
     
-
+    """
+    Randomly select a word from the dictionary.
+    """
     def generateWord(self):
         word = random.choice(self.dictionary)
         #print(word) ####################################################################
         return word
 
+    """
+    Create the dictionary from 'dictionary.txt'.
+    """
     def createDict(self):
         with open("dictionary.txt") as dictionary:
             all_words = dictionary.read()
             self.dictionary = list(map(str, all_words.split()))
     
+    """
+    Reset the entire game object.
+    """
     def resetGame(self):
         self.playBoard.pack_forget()
         self.entryBox.pack_forget()
