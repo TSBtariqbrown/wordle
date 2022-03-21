@@ -95,13 +95,16 @@ class WordleGame:
                         right_word[x] = " "
                         right_word = "".join(right_word)
                         right_count += 1
+                    elif x != guess.find(y) and right_word.count(y.upper()) == 1:
+                        self.setGrid(1, "white", "grey", self.attempt, x, y.upper())
                     else:
                         self.setGrid(1, "black", "yellow", self.attempt, x, y.upper())
                         if self.getGridColor(y.upper()) != "green":
                             self.setGrid(2, "black", "yellow", letter=y.upper())
                 else:
                     self.setGrid(1, "white", "grey", self.attempt, x, y.upper())
-                    self.setGrid(2, "white", "grey", letter=y.upper())
+                    if self.getGridColor(y.upper()) != "green" and self.getGridColor(y.upper()) != "yellow":
+                            self.setGrid(2, "white", "grey", letter=y.upper())
             self.attempt += 1
             self.statusBar.config(text = "")
             self.checkGameEnd(right_count)
@@ -126,7 +129,7 @@ class WordleGame:
             self.wordEntry.config(state=DISABLED)
             self.statusBar.config(text = 'You found the word! Click "RESET" to start a new game.')
             self.submitButton.config(text="RESET", command=self.resetGame)
-        if self.attempt == 6:
+        elif self.attempt == 6:
             self.wordEntry.config(state=DISABLED)
             self.statusBar.config(text = f'The word was "{self.word}". Click "RESET" to start a new game.')
             self.submitButton.config(text="RESET", command=self.resetGame)
